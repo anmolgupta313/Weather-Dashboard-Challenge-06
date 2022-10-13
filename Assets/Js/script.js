@@ -3,6 +3,7 @@ var searchInput= document.querySelector("#city")
 
 var searchBtn= document.querySelector("#search-btn")
 
+var arrSearch = [];
 // Added an click event listener on a search button
 searchBtn.addEventListener("click",function(event){
 
@@ -11,7 +12,8 @@ searchBtn.addEventListener("click",function(event){
   //Setting value in local storage
   var searchInputValue= searchInput.value;
 
-  localStorage.setItem("city", searchInputValue);
+  arrSearch.push(searchInput.value)
+  localStorage.setItem("city",  JSON.stringify(arrSearch));
 
   //Selecting a div and creating a div
   var formSearchDiv=  document.querySelector("#form-search-div")
@@ -28,8 +30,8 @@ searchBtn.addEventListener("click",function(event){
   citylistBtn.setAttribute("style", "width:100%; margin-top:20px; background-color:rgb(45, 84, 255); color:white; padding: 6px 0px 6px 0px; border:rgb(45, 84, 255); cursor:pointer;");
   
   //Using the key getting the local storage value
-  citylistBtn.innerHTML= localStorage.getItem("city");
-  cityListDiv.appendChild(citylistBtn);
+  // citylistBtn.innerHTML= JSON.parse(localStorage.getItem("city"));
+  
   
 
   
@@ -50,6 +52,33 @@ searchBtn.addEventListener("click",function(event){
       return response.json();
     })
     .then(function (data) {
+
+      //stored city name in a variable and then appended that value to button
+      var cityNameInput= data.city.name;
+
+      citylistBtn.innerHTML= cityNameInput;
+      cityListDiv.appendChild(citylistBtn);
+
+      //created a function if some one enters a wrong city name then it wont search 
+      function error(error){
+        if(searchInput!== cityNameInput){
+
+        }
+      }
+
+      error(searchInput);
+
+  //     citylistBtn.addEventListener("click", function(){
+  //       var requestUrlCity= 'https://api.openweathermap.org/data/2.5/forecast?q='+cityNameInput+'&list=5&units=metric&appid=6a85d182a1673983bda2c1950cb9dd1e';
+  
+  // fetch(requestUrl)
+  //   .then(function (response) {
+  //     return response.json();
+  //   })
+  //   .then(function (data) {
+  //   }
+  //     })
+
 
       console.log(data);
     // Under fetch Selecting a h3 and assigning city value
@@ -144,3 +173,7 @@ searchBtn.addEventListener("click",function(event){
 
 })
 
+
+citylistBtn.addEventListener("click", function(event){
+
+})
