@@ -1,31 +1,39 @@
+//Selected search input & btn using queryselector.
 var searchInput= document.querySelector("#city")
 
 var searchBtn= document.querySelector("#search-btn")
 
+// Added an click event listener on a search button
 searchBtn.addEventListener("click",function(event){
 
   event.preventDefault();
   
+  //Setting value in local storage
   var searchInputValue= searchInput.value;
 
   localStorage.setItem("city", searchInputValue);
 
+  //Selecting a div and creating a div
   var formSearchDiv=  document.querySelector("#form-search-div")
   var cityListDiv= document.createElement("div");
 
+  //Appending a div
   formSearchDiv.appendChild(cityListDiv);
-
+  // creating a button using crealte element
   var citylistBtn=  document.createElement("button");
 
+  //using setattribute setting a class and giving style 
   citylistBtn.setAttribute("class","city-list-btn");
 
   citylistBtn.setAttribute("style", "width:100%; margin-top:20px; background-color:rgb(45, 84, 255); color:white; padding: 6px 0px 6px 0px; border:rgb(45, 84, 255); cursor:pointer;");
+  
+  //Using the key getting the local storage value
   citylistBtn.innerHTML= localStorage.getItem("city");
   cityListDiv.appendChild(citylistBtn);
   
 
   
-
+//Selected a div and stated an id statement on click
     var mainDataDiv= document.querySelector("#main-data-div")
     if(mainDataDiv.style.display==="none"){
       mainDataDiv.style.display="flex";
@@ -34,7 +42,7 @@ searchBtn.addEventListener("click",function(event){
     }
 
     
-
+//Created a variable and andded api url and then using this variable in assigning url in fetch  
    var requestUrl= 'https://api.openweathermap.org/data/2.5/forecast?q='+searchInputValue+'&list=5&units=metric&appid=6a85d182a1673983bda2c1950cb9dd1e';
   
   fetch(requestUrl)
@@ -44,19 +52,19 @@ searchBtn.addEventListener("click",function(event){
     .then(function (data) {
 
       console.log(data);
-
-
-
+    // Under fetch Selecting a h3 and assigning city value
     var cityName= document.querySelector("h3");
     cityName.innerHTML= searchInputValue;
     var currentDate= document.querySelector("#current-date");
     // console.log(currentDate);
+    //selecting elements using query selector
     var icon= document.querySelector("#icon-img");
     var temp= document.querySelector("#temp");
     var wind= document.querySelector("#wind");
     var humidity= document.querySelector("#humidity");
-    // var uvIndex= document.querySelector("#un-index");
+    var uvIndex= document.querySelector("#uv-index");
   
+    //stored value in variables 
     var presentDate= data.list[0].dt_txt.split(" ")[0];
     var cityTemp= data.list[0].main.temp;
     // console.log(cityTemp);
@@ -65,11 +73,14 @@ searchBtn.addEventListener("click",function(event){
     var cityHumidity= data.list[0].main.humidity;
     // console.log(cityHumidity)
     var tempIcon= data.list[0].weather[0].icon;
-    
+
+
+    // storing url for icons in a variable
     var iconurl = "http://openweathermap.org/img/w/" + tempIcon + ".png";
     // console.log(tempIcon) 
     icon.setAttribute("src",iconurl);
     
+    //Adding value to the elements
     currentDate.innerHTML= presentDate;
 
     temp.innerHTML="Temp: " + cityTemp + "°C";
@@ -78,8 +89,9 @@ searchBtn.addEventListener("click",function(event){
     icon.innerHTML=tempIcon;
     // uvIndex.innerHTML=uV;
 
-    
 
+    
+    // Selected elements using queryselector all and created empty array
     var futureDate = document.querySelectorAll(".futuree-date");
     var futureDateText = [];
 
@@ -94,7 +106,7 @@ searchBtn.addEventListener("click",function(event){
 
     var forecastIcon= document.querySelectorAll(".icon-img")
     var futureForecastIcon=[];
-
+    // Created a for loop for fetching data for the next 5 days
     for (var i = 0; i < data.list.length; i = i + 8) {
       futureDateText.push(data.list[i].dt_txt.split(" ")[0]);
       futureTempText.push(data.list[i].main.temp);
@@ -104,6 +116,8 @@ searchBtn.addEventListener("click",function(event){
 
       console.log(futureForecastIcon);
     }
+
+    //Created multiple for loops for adding forcast data in difference element
     for (var v = 0; v < futureDate.length; v++) {
       futureDate[v].innerHTML = futureDateText[v];
     }
@@ -123,9 +137,6 @@ searchBtn.addEventListener("click",function(event){
     for(var ic=0; ic<forecastIcon.length; ic++){
       forecastIcon[ic].setAttribute("src",futureForecastIcon[ic]);
     }
-
-    
-
 
      
 
