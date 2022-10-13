@@ -81,6 +81,10 @@ input{
     font-weight: 600;
 }
 
+#icon-img{
+    width: 100px !important;
+}
+
 #weather-detail{
     padding: 12px;
 }
@@ -124,7 +128,22 @@ div#weather-detail p{
     margin: 15px 10px 0px 15px;
 }
 
-.card-text{
+.icon-img{
+    width: 100px !important;
+}
+.card-text-temp{
+    font-size: 19px;
+    font-weight: 400;
+    color: white;
+}
+
+.card-text-wind{
+    font-size: 19px;
+    font-weight: 400;
+    color: white;
+}
+
+.card-text-humidity{
     font-size: 19px;
     font-weight: 400;
     color: white;

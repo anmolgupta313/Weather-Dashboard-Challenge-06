@@ -1,4 +1,3 @@
-
 var searchInput= document.querySelector("#city")
 
 var searchBtn= document.querySelector("#search-btn")
@@ -8,7 +7,8 @@ searchBtn.addEventListener("click",function(event){
   event.preventDefault();
   
   var searchInputValue= searchInput.value;
-  localStorage.setItem("city",searchInputValue);
+
+  localStorage.setItem("city", searchInputValue);
 
   var formSearchDiv=  document.querySelector("#form-search-div")
   var cityListDiv= document.createElement("div");
@@ -32,10 +32,11 @@ searchBtn.addEventListener("click",function(event){
     }else{
       mainDataDiv.setAttribute("style","display:flex;");
     }
+
+    
+
    var requestUrl= 'https://api.openweathermap.org/data/2.5/forecast?q='+searchInputValue+'&list=5&units=metric&appid=6a85d182a1673983bda2c1950cb9dd1e';
-  // var requestUrl= "https://api.openweathermap.org/data/2.5/weather?q=" +
-  // searchInputValue +
-  // "&units=metric&appid=6a85d182a1673983bda2c1950cb9dd1e";  
+  
   fetch(requestUrl)
     .then(function (response) {
       return response.json();
@@ -44,25 +45,19 @@ searchBtn.addEventListener("click",function(event){
 
       console.log(data);
 
-   var fiveDayData= data.daily;
-   console.log(fiveDayData)
 
 
     var cityName= document.querySelector("h3");
     cityName.innerHTML= searchInputValue;
     var currentDate= document.querySelector("#current-date");
     // console.log(currentDate);
-    var icon= document.querySelector("#icon");
+    var icon= document.querySelector("#icon-img");
     var temp= document.querySelector("#temp");
     var wind= document.querySelector("#wind");
     var humidity= document.querySelector("#humidity");
-    var uvIndex= document.querySelector("#un-index");
-
-    // // console.log(cityName, currentDate, icon, temp, wind, humidity, uvIndex);
-
+    // var uvIndex= document.querySelector("#un-index");
   
-
-    var presentDate= data.list[0].dt_txt;
+    var presentDate= data.list[0].dt_txt.split(" ")[0];
     var cityTemp= data.list[0].main.temp;
     // console.log(cityTemp);
     var cityWindSpeed= data.list[0].wind.speed;
@@ -70,9 +65,11 @@ searchBtn.addEventListener("click",function(event){
     var cityHumidity= data.list[0].main.humidity;
     // console.log(cityHumidity)
     var tempIcon= data.list[0].weather[0].icon;
-
-    var urlll= "http://openweathermap.org/img/wn/";
+    
+    var iconurl = "http://openweathermap.org/img/w/" + tempIcon + ".png";
     // console.log(tempIcon) 
+    icon.setAttribute("src",iconurl);
+    
     currentDate.innerHTML= presentDate;
 
     temp.innerHTML="Temp: " + cityTemp + "°C";
@@ -82,20 +79,55 @@ searchBtn.addEventListener("click",function(event){
     // uvIndex.innerHTML=uV;
 
     
-   for(var i=0; i<data.list.length; i= i+8){
-    var futureDate= document.querySelector(".futuree-date");
-    console.log(futureDate);
 
-    for( var v= 0; v<futureDate.length; v++){
-      
+    var futureDate = document.querySelectorAll(".futuree-date");
+    var futureDateText = [];
+
+    var futureTemp = document.querySelectorAll(".card-text-temp");
+    var futureTempText=[];
+
+    var futureWindSpeed=document.querySelectorAll(".card-text-wind");
+    var futureWindSpeedText= [];
+
+    var futureHumidity= document.querySelectorAll(".card-text-humidity");
+    var futureHumidityText=[];
+
+    var forecastIcon= document.querySelectorAll(".icon-img")
+    var futureForecastIcon=[];
+
+    for (var i = 0; i < data.list.length; i = i + 8) {
+      futureDateText.push(data.list[i].dt_txt.split(" ")[0]);
+      futureTempText.push(data.list[i].main.temp);
+      futureWindSpeedText.push(data.list[i].wind.speed);
+      futureHumidityText.push(data.list[i].main.humidity);
+      futureForecastIcon.push("http://openweathermap.org/img/w/" + data.list[i].weather[0].icon + ".png");
+
+      console.log(futureForecastIcon);
+    }
+    for (var v = 0; v < futureDate.length; v++) {
+      futureDate[v].innerHTML = futureDateText[v];
     }
 
-    var vv= data.list[i].dt_txt;
+    for( var t=0; t<futureTemp.length; t++){
+      futureTemp[t].innerHTML="Temp: " + futureTempText[t] + "°C";
+    }
 
-    console.log(vv);
+    for(var w=0; w<futureWindSpeed.length; w++){
+      futureWindSpeed[w].innerHTML= "Wind: " + futureWindSpeedText[w] + "MPH";
+    }
 
-  futureDate.innerHTML= vv;
-     }
+    for( var h=0; h<futureHumidity.length; h++){
+      futureHumidity[h].innerHTML="Humidity: " + futureHumidityText[h] +"%";
+    }
+
+    for(var ic=0; ic<forecastIcon.length; ic++){
+      forecastIcon[ic].setAttribute("src",futureForecastIcon[ic]);
+    }
+
+    
+
+
+     
 
   });
 
