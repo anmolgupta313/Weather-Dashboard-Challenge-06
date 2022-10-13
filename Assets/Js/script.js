@@ -68,20 +68,17 @@ searchBtn.addEventListener("click",function(event){
 
       error(searchInput);
 
-  //     citylistBtn.addEventListener("click", function(){
-  //       var requestUrlCity= 'https://api.openweathermap.org/data/2.5/forecast?q='+cityNameInput+'&list=5&units=metric&appid=6a85d182a1673983bda2c1950cb9dd1e';
-  
-  // fetch(requestUrl)
-  //   .then(function (response) {
-  //     return response.json();
-  //   })
-  //   .then(function (data) {
-  //   }
-  //     })
+      citylistBtn.addEventListener("click", function(){
+
+        uiGen(data,searchInput);
+        
+      })
 
 
       console.log(data);
     // Under fetch Selecting a h3 and assigning city value
+
+    function uiGen(data, searchInput){
     var cityName= document.querySelector("h3");
     cityName.innerHTML= searchInputValue;
     var currentDate= document.querySelector("#current-date");
@@ -167,13 +164,13 @@ searchBtn.addEventListener("click",function(event){
       forecastIcon[ic].setAttribute("src",futureForecastIcon[ic]);
     }
 
-     
+  }
+
+  uiGen(data,searchInput);
 
   });
 
 })
 
 
-citylistBtn.addEventListener("click", function(event){
 
-})
